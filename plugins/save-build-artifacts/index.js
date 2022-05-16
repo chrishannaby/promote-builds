@@ -7,6 +7,7 @@ function uploadToS3(fileName) {
     accessKeyId: process.env.MY_AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY,
   });
+  console.log(process.cwd());
   const fileContent = fs.readFileSync(fileName);
   const params = {
     Bucket: process.env.MY_AWS_BUCKET_NAME,
