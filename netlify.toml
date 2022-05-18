@@ -1,2 +1,2 @@
 [[plugins]]
-package = "/plugins/save-build-artifacts"
+package = "netlify-plugin-save-build-artifacts-s3"
