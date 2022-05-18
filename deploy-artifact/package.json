@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "netlify-plugin-deploy-build-artifacts-s3": "^0.0.6"
+    "netlify-plugin-deploy-build-artifacts-s3": "^0.0.7"
   }
 }
