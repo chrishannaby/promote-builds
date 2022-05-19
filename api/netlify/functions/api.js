@@ -11,6 +11,12 @@ const sites = {
   },
 };
 
+const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+};
+
 exports.handler = async function (event, context) {
   const client = new NetlifyAPI(process.env.NETLIFY_API_ACCESS_TOKEN);
 
@@ -23,6 +29,7 @@ exports.handler = async function (event, context) {
       if (segments.length === 0) {
         return {
           statusCode: 200,
+          headers,
           body: "hello world",
         };
       }
@@ -40,11 +47,13 @@ exports.handler = async function (event, context) {
         }
         return {
           statusCode: 200,
+          headers,
           body: JSON.stringify(filteredSites),
         };
       } else {
         return {
           statusCode: 500,
+          headers,
           body: "too many segments in GET request",
         };
       }
@@ -55,6 +64,7 @@ exports.handler = async function (event, context) {
     default:
       return {
         statusCode: 500,
+        headers,
         body: "unrecognized HTTP Method, must be one of GET/POST/PUT/DELETE",
       };
   }
