@@ -2,6 +2,6 @@
   "name": "api",
   "version": "1.0.0",
   "dependencies": {
-    "netlify": "^11.0.1"
+    "netlify": "^9.0.0"
   }
 }
