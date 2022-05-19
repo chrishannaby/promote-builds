@@ -6,7 +6,10 @@ exports.handler = async (event, context) => {
     case "GET":
       /* GET /.netlify/functions/api */
       if (segments.length === 0) {
-        return;
+        return {
+          statusCode: 200,
+          body: "hello world",
+        };
       }
       /* GET /.netlify/functions/api/123456 */
       if (segments.length === 1) {
