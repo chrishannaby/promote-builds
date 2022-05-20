@@ -37,12 +37,16 @@ exports.handler = async function (event, context) {
       if (segments.length === 1 && segments[0] === "sites") {
         const filteredSites = [];
         for (const site in sites) {
-          const siteData = await client.getSite({ site_id: site });
+          const siteData = sites[site];
+          const deployData = await client.getSite({ site_id: site });
           filteredSites.push({
-            ...sites[site],
+            ...sitesData,
             id: site,
-            url: siteData.ssl_url,
-            publishedDeploy: siteData.published_deploy,
+            url: deployData.ssl_url,
+            publishedDeploy: deployData.published_deploy,
+            promoteTo: {
+              ...sites[siteData.promoteTo],
+            },
           });
         }
         return {
