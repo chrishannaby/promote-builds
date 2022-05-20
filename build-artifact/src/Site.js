@@ -1,29 +1,92 @@
+import axios from "axios";
+
+async function promoteBuild(buildHook, commitId) {
+  console.log(commitId);
+  const url = `${buildHook}?trigger_title=${commitId}`;
+  const res = await axios.post(url, commitId, {
+    headers: { "Content-Type": "text/plain" },
+  });
+  console.log(res.data);
+}
+
 export default function Site({ site }) {
+  const hasDeploy = site && site.publishedDeploy;
+  const commitId =
+    site?.publishedDeploy?.commit_ref || site?.publishedDeploy?.title;
   return (
-    <div className="flex">
-      <div className="mr-4 flex-shrink-0">
-        <svg
-          className="h-16 w-16 border border-gray-300 bg-white text-gray-300"
-          preserveAspectRatio="none"
-          stroke="currentColor"
-          fill="none"
-          viewBox="0 0 200 200"
-          aria-hidden="true"
-        >
-          <path
-            vectorEffect="non-scaling-stroke"
-            strokeWidth={1}
-            d="M0 0l200 200M0 200L200 0"
+    <div className="flex sm:flex-row flex-col">
+      <div className="mb-6 sm:mb-0 sm:mr-6 flex-shrink-0 sm:self-center">
+        {hasDeploy ? (
+          <img
+            className="border border-gray-300 inline-block h-16 w-24 rounded-md object-cover place-content-center conte"
+            src={site.publishedDeploy.screenshot_url}
+            alt=""
           />
-        </svg>
+        ) : (
+          <Placeholder />
+        )}
       </div>
-      <div>
-        <h4 className="text-lg font-bold">Lorem ipsum</h4>
-        <p className="mt-1">
-          Repudiandae sint consequuntur vel. Amet ut nobis explicabo numquam
-          expedita quia omnis voluptatem. Minus quidem ipsam quia iusto.
-        </p>
+      <div className="flex-grow">
+        <h4 className="text-lg font-bold mb-2">{site.name}</h4>
+        <dl className="mb-6 w-full grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+          <div className="sm:col-span-1">
+            <dt className="text-sm font-medium text-gray-500">Published At</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {hasDeploy ? site.publishedDeploy.published_at : "--"}
+            </dd>
+          </div>
+          <div className="sm:col-span-1">
+            <dt className="text-sm font-medium text-gray-500">Deploy URL</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              <a href={site.url}>{site.url}</a>
+            </dd>
+          </div>
+          <div className="sm:col-span-1">
+            <dt className="text-sm font-medium text-gray-500">Commit</dt>
+            <dd className="mt-1 text-sm text-gray-900">
+              {hasDeploy ? (
+                <a href={site.publishedDeploy.commit_url}>
+                  {site.publishedDeploy.title}
+                </a>
+              ) : (
+                "--"
+              )}
+            </dd>
+          </div>
+        </dl>
+        {hasDeploy && site.promoteTo.name ? (
+          <div className="flex justify-end">
+            <button
+              onClick={async () =>
+                await promoteBuild(site.promoteTo.buildHook, commitId)
+              }
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Promote to {site.promoteTo.name}
+            </button>
+          </div>
+        ) : undefined}
       </div>
     </div>
+  );
+}
+
+function Placeholder() {
+  return (
+    <svg
+      className="h-16 w-24 rounded-md border border-gray-300 bg-white text-gray-300"
+      preserveAspectRatio="none"
+      stroke="currentColor"
+      fill="none"
+      viewBox="0 0 200 200"
+      aria-hidden="true"
+    >
+      <path
+        vectorEffect="non-scaling-stroke"
+        strokeWidth={1}
+        d="M0 0l200 200M0 200L200 0"
+      />
+    </svg>
   );
 }

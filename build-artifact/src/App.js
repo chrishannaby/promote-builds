@@ -2,7 +2,7 @@ import Layout from "./Layout";
 import Site from "./Site";
 import axios from "axios";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-const { SITE_API_URL } = process.env;
+//const { SITE_API_URL } = process.env;
 
 const queryClient = new QueryClient();
 
