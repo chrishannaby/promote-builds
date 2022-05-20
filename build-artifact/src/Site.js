@@ -1,12 +1,39 @@
 import axios from "axios";
+import { useQuery } from "react-query";
 
 async function promoteBuild(buildHook, commitId) {
-  console.log(commitId);
   const url = `${buildHook}?trigger_title=${commitId}`;
-  const res = await axios.post(url, commitId, {
+  await axios.post(url, commitId, {
     headers: { "Content-Type": "text/plain" },
   });
-  console.log(res.data);
+}
+
+function BuildingLabel({ id }) {
+  const { status, data } = useQuery(
+    id,
+    async () => {
+      // const res = await axios.get(`${SITE_API_URL}/sites`);
+      const res = await axios.get(
+        `https://promote-builds-api.netlify.app/.netlify/functions/api/sites/${id}`
+      );
+      return res.data;
+    },
+    {
+      refetchInterval: 200,
+    }
+  );
+  if (status === "loading") return;
+  if (status === "error") return;
+
+  return (
+    <>
+      {data.isBuilding && (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+          Building
+        </span>
+      )}
+    </>
+  );
 }
 
 export default function Site({ site }) {
@@ -27,7 +54,10 @@ export default function Site({ site }) {
         )}
       </div>
       <div className="flex-grow">
-        <h4 className="text-lg font-bold mb-2">{site.name}</h4>
+        <h4 className="text-lg font-bold mb-2 flex items-center">
+          <span className="mr-3">{site.name}</span>
+          <BuildingLabel id={site.id} />
+        </h4>
         <dl className="mb-6 w-full grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
           <div className="sm:col-span-1">
             <dt className="text-sm font-medium text-gray-500">Published At</dt>

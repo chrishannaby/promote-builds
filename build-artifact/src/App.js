@@ -28,7 +28,7 @@ function Sites() {
     },
     {
       // Refetch the data every second
-      refetchInterval: 1000,
+      refetchInterval: 200,
     }
   );
   if (status === "loading") return <h1>Loading...</h1>;
