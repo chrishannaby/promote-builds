@@ -2,7 +2,6 @@ import Layout from "./Layout";
 import Site from "./Site";
 import axios from "axios";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
-//const { SITE_API_URL } = process.env;
 
 const queryClient = new QueryClient();
 
@@ -20,10 +19,7 @@ function Sites() {
   const { status, data, error } = useQuery(
     "sites",
     async () => {
-      // const res = await axios.get(`${SITE_API_URL}/sites`);
-      const res = await axios.get(
-        `https://promote-builds-api.netlify.app/.netlify/functions/api/sites`
-      );
+      const res = await axios.get("/api/sites");
       return res.data;
     },
     {

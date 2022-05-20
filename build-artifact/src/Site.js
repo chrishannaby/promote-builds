@@ -8,34 +8,6 @@ async function promoteBuild(buildHook, commitId) {
   });
 }
 
-function BuildingLabel({ id }) {
-  const { status, data } = useQuery(
-    id,
-    async () => {
-      // const res = await axios.get(`${SITE_API_URL}/sites`);
-      const res = await axios.get(
-        `https://promote-builds-api.netlify.app/.netlify/functions/api/sites/${id}`
-      );
-      return res.data;
-    },
-    {
-      refetchInterval: 1000,
-    }
-  );
-  if (status === "loading") return;
-  if (status === "error") return;
-
-  return (
-    <>
-      {data.isBuilding && (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
-          Building
-        </span>
-      )}
-    </>
-  );
-}
-
 export default function Site({ site }) {
   const hasDeploy = site && site.publishedDeploy;
   const commitId =
@@ -99,6 +71,31 @@ export default function Site({ site }) {
         ) : undefined}
       </div>
     </div>
+  );
+}
+
+function BuildingLabel({ id }) {
+  const { status, data } = useQuery(
+    id,
+    async () => {
+      const res = await axios.get(`/api/sites/${id}`);
+      return res.data;
+    },
+    {
+      refetchInterval: 1000,
+    }
+  );
+  if (status === "loading") return;
+  if (status === "error") return;
+
+  return (
+    <>
+      {data.isBuilding && (
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">
+          Building
+        </span>
+      )}
+    </>
   );
 }
 
