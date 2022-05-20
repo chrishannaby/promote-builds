@@ -1,9 +1,13 @@
 const NetlifyAPI = require("netlify");
 const sites = {
-  "e675dda5-c476-4e6b-850d-6cb6df3a39f3": { name: "Production" },
+  "e675dda5-c476-4e6b-850d-6cb6df3a39f3": {
+    name: "Production",
+    buildHook: "https://api.netlify.com/build_hooks/6286dfd714351656169a87f8",
+  },
   "33f525cd-6f1d-4bf5-8a32-ff20fc1f0c21": {
     name: "QA",
     promoteTo: "e675dda5-c476-4e6b-850d-6cb6df3a39f3",
+    buildHook: "https://api.netlify.com/build_hooks/6286dff8fa1410570855dfe5",
   },
   "5ade471d-9800-4baa-9101-7451966efd6b": {
     name: "Release",
