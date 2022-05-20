@@ -19,7 +19,7 @@ function BuildingLabel({ id }) {
       return res.data;
     },
     {
-      refetchInterval: 200,
+      refetchInterval: 1000,
     }
   );
   if (status === "loading") return;
