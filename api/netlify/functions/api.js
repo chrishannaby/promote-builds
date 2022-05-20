@@ -40,7 +40,7 @@ exports.handler = async function (event, context) {
           const siteData = sites[site];
           const deployData = await client.getSite({ site_id: site });
           filteredSites.push({
-            ...sitesData,
+            ...siteData,
             id: site,
             url: deployData.ssl_url,
             publishedDeploy: deployData.published_deploy,
