@@ -4,3 +4,6 @@ command = "echo onBuild"
 
 [[plugins]]
 package = "netlify-plugin-deploy-build-artifacts-s3"
+
+[[plugins]]
+package = "/plugins/create-redirects"
