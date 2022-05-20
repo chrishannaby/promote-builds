@@ -58,6 +58,22 @@ exports.handler = async function (event, context) {
           headers,
           body: JSON.stringify(filteredSites),
         };
+      }
+      /* GET /.netlify/functions/api/sites */
+      if (segments.length === 2 && segments[0] === "sites") {
+        const siteId = segments[1];
+        const deploys = await client.listSiteDeploys({
+          site_id: siteId,
+        });
+        const buildingDeploys = deploys.filter(
+          (d) => d.context === "production" && d.state === "building"
+        );
+        const isBuilding = buildingDeploys.length > 0;
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ isBuilding }),
+        };
       } else {
         return {
           statusCode: 500,
